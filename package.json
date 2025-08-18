@@ -1,5 +1,5 @@
 {
-  "name": "Clarity",
+  "name": "clarity",
   "private": true,
   "scripts": {
     "build": "turbo run build",

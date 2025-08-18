@@ -1,0 +1,12 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: clarity-db
+    ports:
+      - "3307:3306"
+    env_file:
+      - "./apps/server/.env.local"
+    volumes:
+      - mysql-data:/var/lib/mysql
+volumes:
+  mysql-data:
