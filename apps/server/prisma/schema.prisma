@@ -14,9 +14,17 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+enum Strategy {
+  google
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
+  userId     Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  email      String   @unique
+  name       String
+  lastname   String
+  avatarUrl  String
+  provider   Strategy
+  providerId String   @unique
 }
