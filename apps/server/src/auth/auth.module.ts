@@ -7,6 +7,8 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserStrategiesModule } from '@/user-strategies/user-strategies.module';
+import maxAgeJwt from '@/common/constant/max-age-jwt.constant';
+
 
 @Module({
   providers: [
@@ -20,7 +22,7 @@ import { UserStrategiesModule } from '@/user-strategies/user-strategies.module';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '15d' },
+      signOptions: { expiresIn: maxAgeJwt.unit },
     }),
     UserStrategiesModule,
   ],

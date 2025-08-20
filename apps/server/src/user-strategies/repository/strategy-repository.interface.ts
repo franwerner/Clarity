@@ -3,7 +3,7 @@ import { Strategies } from "@/common/enums/strategies.enum";
 import { UserStrategyEntity } from "../user-strategy.entity";
 
 export interface IStrategyRepository {
-    create(s: CreateStrategyDto): Promise<UserStrategyEntity | null>
+    create(s: CreateStrategyDto): Promise<UserStrategyEntity>
     findByStrategy(s: { strategy: Strategies, strategyId: string }): Promise<UserStrategyEntity | null>
 }
 

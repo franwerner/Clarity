@@ -4,6 +4,7 @@ import { Controller, Get, HttpStatus, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth.guard';
+import maxAgeJwt from '@/common/constant/max-age-jwt.constant';
 
 @Controller('auth')
 export class AuthController {
@@ -28,7 +29,7 @@ export class AuthController {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 15 * 24 * 60 * 60 * 1000,
+            maxAge: maxAgeJwt.value,
         })
         res.sendStatus(HttpStatus.OK)
     }

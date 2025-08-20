@@ -3,6 +3,7 @@ import { UserService } from '@/user/user.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserStrategyDto } from '../user-strategies/dto/create-user-strategy.dto';
+import { UserEntity } from '@/user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -18,22 +19,23 @@ export class AuthService {
             ...dto.strategy,
             userFk: user.id,
         })
-        return this.generateToken(user)
+        return user
     }
 
-    private generateToken(user: any) {
-        const { id, email, avatarUrl, createdAt, lastname, name } = user
-        const payload = { id, email, avatarUrl, createdAt, lastname, name }
+    private generateToken(user: UserEntity) {
+        const payload = { sub: user.id }
         return { accessToken: this.jwtService.sign(payload) }
     }
 
     async signIn(dto: CreateUserStrategyDto) {
-        const strategy = await this.strategyRepository.findByStrategy(dto.strategy)
-        if (strategy) {
-            const user = await this.userService.findById(strategy.userFk)
-            return this.generateToken(user)
-        }
-        return this.createUserAndStrategy(dto);
-    }
 
+        const strategy = await this.strategyRepository.findByStrategy(dto.strategy)
+
+        const user = strategy ?
+            await this.userService.findById(strategy.userFk) :
+            await this.createUserAndStrategy(dto)
+
+        return this.generateToken(user)
+
+    }
 }
