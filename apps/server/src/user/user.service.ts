@@ -17,20 +17,23 @@ export class UserService {
         return user
     }
 
+    async findById(id: number) {
+        const user = await this.userRepository.findById(id)
+        if (!user) {
+            throw new NotFoundException("User not found")
+        }
+        return user
+    }
+
     findAll() {
         return this.userRepository.findAll()
     }
 
-    async getOrCreate(user: CreateUserDto) {
-        const findedUser = await this.findByEmail(user.email)
-        if (!findedUser) {
-            return await this.registerUser(user)
-        }
-        return findedUser
+    async createIfNotExits(user: CreateUserDto) {
+        const userExists = await this.userRepository.findByEmail(user.email)
+        if (userExists) return userExists
+        return await this.userRepository.create(user)
     }
 
-    registerUser(user: CreateUserDto) {
-        return this.userRepository.create(user)
-    }
 
 }

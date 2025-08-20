@@ -1,5 +1,5 @@
 import { User } from '@/common/decorators/user.decorator';
-import { CreateUserDto } from '@/user/dto/create-user.dto';
+import { CreateUserStrategyDto } from '@/user-strategies/dto/create-user-strategy.dto';
 import { Controller, Get, HttpStatus, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
@@ -22,7 +22,7 @@ export class AuthController {
 
     @Get('google/callback')
     @UseGuards(GoogleAuthGuard)
-    async googleAuthCallback(@User() user: CreateUserDto, @Res() res: Response) {
+    async googleAuthCallback(@User() user: CreateUserStrategyDto, @Res() res: Response) {
         const token = await this.authService.signIn(user)
         res.cookie('jwt', token.accessToken, {
             httpOnly: true,
@@ -32,5 +32,4 @@ export class AuthController {
         })
         res.sendStatus(HttpStatus.OK)
     }
-
 }

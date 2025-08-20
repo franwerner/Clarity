@@ -1,3 +1,3 @@
 export enum Strategies {
-    GOOGLE = 'google'
+    GOOGLE = 'google',
 }

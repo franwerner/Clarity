@@ -19,12 +19,21 @@ enum Strategy {
 }
 
 model User {
-  userId     Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  email      String   @unique
-  name       String
-  lastname   String
-  avatarUrl  String
-  provider   Strategy
-  providerId String   @unique
+  id           Int            @id @default(autoincrement())
+  createdAt    DateTime       @default(now())
+  email        String         @unique
+  name         String
+  lastname     String
+  avatarUrl    String
+  userStrategy UserStrategy[]
+}
+
+model UserStrategy {
+  id         Int      @id @default(autoincrement())
+  strategy   Strategy
+  strategyId String
+  userFk     Int
+  user       User     @relation(fields: [userFk], references: [id])
+
+  @@unique([strategy, strategyId])
 }

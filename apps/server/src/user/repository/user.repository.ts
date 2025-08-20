@@ -15,6 +15,14 @@ class UserRepository implements IUserRepository {
         })
     }
 
+    findById(id: number) {
+        return this.db.user.findUnique({
+            where: {
+                id
+            }
+        })
+    }
+
     findByEmail(email: string) {
         return this.db.user.findUnique({
             where: {

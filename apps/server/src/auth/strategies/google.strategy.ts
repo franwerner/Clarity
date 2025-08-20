@@ -1,8 +1,8 @@
+import { Strategies } from "@/common/enums/strategies.enum";
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy, VerifyCallback } from "passport-google-oauth2";
-import { CreateUserDto } from "@/user/dto/create-user.dto";
-import { Strategies } from "@/common/enums/strategies.enum";
+import { CreateUserStrategyDto } from "@/user-strategies/dto/create-user-strategy.dto";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -22,13 +22,17 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     ): Promise<any> {
         const { id, name, emails, picture } = profile;
 
-        const user: CreateUserDto = {
-            provider: Strategies.GOOGLE,
-            providerId: id,
-            email: emails[0].value,
-            name: name.givenName,
-            lastname: name.familyName,
-            avatarUrl: picture,
+        const user: CreateUserStrategyDto = {
+            strategy: {
+                strategy: Strategies.GOOGLE,
+                strategyId: id,
+            },
+            user: {
+                email: emails[0].value,
+                name: name.givenName,
+                lastname: name.familyName,
+                avatarUrl: picture,
+            }
         }
 
         done(null, user)
